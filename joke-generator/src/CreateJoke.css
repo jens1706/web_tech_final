@@ -1,0 +1,92 @@
+.create-joke-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f2f2f2;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 32px;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.create-joke-container {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  max-width: 800px;
+  width: 90%;
+}
+
+.create-joke-heading {
+  text-align: center;
+  font-size: 32px;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.create-joke-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.joke-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 100px;
+  margin-bottom: 20px;
+}
+
+.submit-joke-button {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 20px;
+  cursor: pointer;
+  width: 200px;
+  transition: background-color 0.3s ease;
+}
+
+.submit-joke-button:hover {
+  background-color: #0056b3;
+}
+
+.back-to-display-link {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.back-to-display-link:hover {
+  color: #0056b3;
+}
+
+.back-to-login-link {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.back-to-login-link:hover {
+  color: #0056b3;
+}
