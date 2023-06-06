@@ -2,18 +2,22 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './CreateJoke.css';
 
+
 const CreateJoke = () => {
   const [joke, setJoke] = useState('');
+  const [sucess, setsucess] = useState('');
 
   const handleInputChange = (event) => {
     setJoke(event.target.value);
+    setsucess('');
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Hier kannst du die Funktion aufrufen, um den Witz an die Datenbank zu senden
-    // Beispiel:
-    // saveJokeToDatabase(joke);
+
+    //sucessfully submitted
+    setJoke('');
+    setsucess('Your joke was saved succesfully!');
     console.log(`Joke submitted: ${joke}`);
   };
 
@@ -22,6 +26,7 @@ const CreateJoke = () => {
       <h1 className="page-title">Random Joke Generator</h1>
       <div className="create-joke-container">
         <h2 className="create-joke-heading">Create Joke</h2>
+        <p className="subheading">{sucess}</p>
         <form className="create-joke-form" onSubmit={handleSubmit}>
           <textarea
             className="joke-input"

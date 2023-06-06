@@ -29,6 +29,12 @@
   color: #007bff;
   margin-bottom: 20px;
 }
+.subheading {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
 .create-joke-form {
   display: flex;

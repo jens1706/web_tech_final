@@ -2,13 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {faCheck, faTimes, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
+import Axios from 'axios';
 
 import './Register.css';
 
  //rules to validate the input
  const Name_REGEX = /^[a-zA-Z][a-zA-Z ]{2,50}$/;
- const Email_REGEX = /^(?=.*[@])[a-zA-Z0-9][a-zA-Z0-9.@]{10,50}$/;
+ const Email_REGEX = /^(?=.*[@])[a-zA-Z0-9][a-zA-Z0-9-_.@]{10,50}$/;
  const Password_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\.-_]).{8,24}$/;
 
 
@@ -33,7 +33,6 @@ const Register = () => {
   const [error, setErrMsg] = useState('');
 
   const userRef = useRef();
-  const errRef = useRef();
 
   useEffect(() => {
     userRef.current.focus();
@@ -78,7 +77,6 @@ const Register = () => {
       setErrMsg("Invalid Entry");
       return;
     }
-
 
 
     // reset of input 
@@ -158,8 +156,8 @@ const Register = () => {
             <p id='emailidnote' className={emailFocus && email && !validemail ? "instructions" : "offscreen"}>
               <FontAwesomeIcon icon={faInfoCircle} />
               10 to 50 characters.<br />
-              Must beginn with a letter or a number and contain a @. <br />
-              Letters, numbers, dots and @ allowed.
+              Must beginn with a letter or a number and contain a <span aria-label="at symbol">@</span>. <br />
+              Letters, numbers, <span aria-label="dot">.</span>, <span aria-label="minus">-</span>, <span aria-label="underscore">_</span> and <span aria-label="at symbol">@</span> allowed.
             </p>
           </div>
           <div className="form-group">
@@ -221,7 +219,7 @@ const Register = () => {
             </p>
           </div>
           {error && <p className="error-message">{error}</p>}
-          <button disabled={!validname || !validemail || !validpassword || !validmatch ? true : false} className="register-button">
+          <button type="submit" className="register-button">
             Register
           </button>
         </form>
