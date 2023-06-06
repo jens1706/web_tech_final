@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './CreateJoke.css';
-import './database.php'
 
 const CreateJoke = () => {
   const [joke, setJoke] = useState('');
