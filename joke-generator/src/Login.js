@@ -10,7 +10,7 @@ import './Login.css';
 const Email_REGEX = /^(?=.*[@])[a-zA-Z0-9][a-zA-Z0-9-_.@]{10,50}$/;
 const Password_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\.-_]).{8,24}$/;
 
-const Login = () => {
+const Login = (props) => {
   const [email, setEmail] = useState('');
   const [validemail, setValidEmail] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
@@ -19,9 +19,9 @@ const Login = () => {
   const [validpassword, setValidPassword] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
 
-  const history = useHistory();
   const [error, setErrMsg] = useState('');
 
+  const history = useHistory();
   const userRef = useRef();
 
   
@@ -59,6 +59,13 @@ const Login = () => {
       return;
     }
 
+
+    //prove the login data with the database
+
+    //send the userID to displayjoke
+    props.onLogin(69); //example
+
+    
     //delete entries
     setEmail('');
     setPassword('');

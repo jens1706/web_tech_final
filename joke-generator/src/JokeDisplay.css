@@ -75,6 +75,23 @@
   .fetch-joke-button:hover {
     background-color: #0056b3;
   }
+
+  .submit-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 20px;
+    cursor: pointer;
+    width: 200px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
   
   .create-joke-link {
     color: #007bff;
@@ -103,4 +120,21 @@
     color: #0056b3;
   }
   
+  .selected {
+    color: #007bff;
+  }
   
+  .rating-stars {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .star {
+    cursor: pointer;
+    margin: 0 2px;
+  }
+
+  .hide {
+    display: none;
+  }

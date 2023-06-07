@@ -14,7 +14,6 @@ const CreateJoke = () => {
   const [validjoke, setValidJoke] = useState(false);
   const [jokeFocus, setJokeFocus] = useState(false);
 
-  const history = useHistory();
   const [sucess, setsucess] = useState('');
   const [error, setErrMsg] = useState('');
 

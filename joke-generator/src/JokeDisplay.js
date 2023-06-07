@@ -1,31 +1,56 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+
+
 import './JokeDisplay.css';
 
-const JokeDisplay = () => {
+const JokeDisplay = (props) => {
   const [joke, setJoke] = useState('');
-  const [language, setLanguage] = useState('en');
+  const [rating, setRating] = useState(0);
+  const [submittedrating, setSubmittedRating] = useState(true);
+  const [jokedisplay, setJokeDisplay] = useState(false);
+  const [jokeID, setJokeID] = useState(0);
+
+  //recieve userID from login or registration
+  const { userID } = props;
+
 
   const fetchJoke = () => {
-    fetch('./database.php')
-      .then(response => response.json())
-      .then(data => {
-        // Überprüfe, ob der Witz-Wert vorhanden ist
-        if (data && data.joke) {
-          setJoke(data.joke);
-        } else {
-          setJoke('No joke available');
-        }
-      })
-      .catch(error => {
-        console.error('Fehler beim Abrufen des zufälligen Witzes:', error);
-        setJoke('Error occurred while fetching joke');
-      });
+    //clear previous joke
+    setJoke('');
+    setRating();
+
+    //set display rules
+    setSubmittedRating(false);
+    setJokeDisplay(true);
+
+
+    //fetch joke from database
+
+
+    //set jokeID from database
+    setJokeID();
+
+
+    //set joke
+    setJoke('example');
   };
 
-  const handleLanguageChange = e => {
-    setLanguage(e.target.value);
-  };  
+  const handleRatingSubmit = () => {
+    // Perform actions here based on the submitted rating
+    console.log('Submitted rating:', rating);
+    
+    //set display rules
+    setSubmittedRating(true);
+    setJokeDisplay(false);
+
+    //send rating result + userID + jokeID to database
+    console.log("userID:" + userID);
+  };
+  
+
 
   return (
     <div className="joke-display-page">
@@ -37,7 +62,22 @@ const JokeDisplay = () => {
             <p className="joke-text">{joke}</p>
           </div>
           <div className="button-container">
-            <button className="fetch-joke-button" onClick={fetchJoke}>
+          <div className={jokedisplay ? "rating-stars" : "hide"}>
+            {[1, 2, 3, 4, 5].map((index) => (
+              <FontAwesomeIcon
+                key={index}
+                icon={faStar}
+                className={`star ${index <= rating ? 'selected' : ''}`}
+                onClick={() => setRating(index)}
+              />
+            ))}
+          </div>
+            {!submittedrating && (
+              <button className={jokedisplay ? "submit-button" : "hide"} onClick={handleRatingSubmit}>
+                Submit Rating
+              </button>
+            )}
+            <button className={submittedrating ? "submit-button" : "hide"} onClick={fetchJoke}>
               Show Joke
             </button>
             <Link to="/create-joke" className="create-joke-link">

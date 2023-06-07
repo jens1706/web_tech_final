@@ -1,19 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 import Login from './Login';
 import Register from './Register';
 import JokeDisplay from './JokeDisplay';
 import CreateJoke from './CreateJoke';
 
 function App() {
+  //settings to send the userID from login and registration to display joke
+  const [userID, setUserID] = useState(0);
+
+  const handleLogin = (userID) => {
+    setUserID(userID);
+  };
+
+  const handleRegister = (userID) => {
+    setUserID(userID);
+  };
+
   return (
     <Router>
       <div className="App">
         <Switch>
-          <Route path="/" exact component={Login} />
-          <Route path="/login" exact component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/jokes" component={JokeDisplay} />
+        <Route path="/" exact render={() => <Login onLogin={handleLogin} />} />
+          <Route path="/login" render={() => <Login onLogin={handleLogin} />} />
+          <Route path="/register" render={() => <Register onRegister={handleRegister} />} />
+          <Route path="/jokes" render={() => <JokeDisplay userID={userID} />} />
           <Route path="/create-joke" component={CreateJoke} />
         </Switch>
       </div>

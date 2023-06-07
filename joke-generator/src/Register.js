@@ -12,7 +12,7 @@ import './Register.css';
  const Password_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\.-_]).{8,24}$/;
 
 
-const Register = () => {
+const Register = (props) => {
   const [name, setName] = useState('');
   const [validname, setValidName] = useState(false);
   const [nameFocus, setNameFocus] = useState(false);
@@ -29,9 +29,9 @@ const Register = () => {
   const [validmatch, setValidMatch] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
 
-  const history = useHistory();
   const [error, setErrMsg] = useState('');
 
+  const history = useHistory();
   const userRef = useRef();
 
   useEffect(() => {
@@ -79,14 +79,21 @@ const Register = () => {
     }
 
 
+    //write registration information into database
+
+
+    //send the userID to displayjoke
+    props.onRegister(69); //example
+
+
     // reset of input 
     setName('');
     setEmail('');
     setPassword('');
     setMatchPassword('');
 
-    //go to Login page
-    history.push('/login');
+    //link to DisplayJoke
+    history.push('/jokes');
   };
 
   return (
