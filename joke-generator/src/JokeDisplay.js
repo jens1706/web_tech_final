@@ -4,6 +4,7 @@ import './JokeDisplay.css';
 
 const JokeDisplay = () => {
   const [joke, setJoke] = useState('');
+  const [language, setLanguage] = useState('en');
 
   const fetchJoke = () => {
     fetch('./database.php')
@@ -21,6 +22,10 @@ const JokeDisplay = () => {
         setJoke('Error occurred while fetching joke');
       });
   };
+
+  const handleLanguageChange = e => {
+    setLanguage(e.target.value);
+  };  
 
   return (
     <div className="joke-display-page">

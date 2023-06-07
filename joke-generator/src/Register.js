@@ -156,7 +156,7 @@ const Register = () => {
             <p id='emailidnote' className={emailFocus && email && !validemail ? "instructions" : "offscreen"}>
               <FontAwesomeIcon icon={faInfoCircle} />
               10 to 50 characters.<br />
-              Must beginn with a letter or a number and contain a <span aria-label="at symbol">@</span>. <br />
+              Must beginn with a letter or a number and contain a <span aria-label="at symbol">@</span>. <br />.
               Letters, numbers, <span aria-label="dot">.</span>, <span aria-label="minus">-</span>, <span aria-label="underscore">_</span> and <span aria-label="at symbol">@</span> allowed.
             </p>
           </div>
