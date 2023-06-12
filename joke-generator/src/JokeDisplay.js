@@ -38,7 +38,6 @@ const JokeDisplay = (props) => {
 
   const fetchJoke = () => {
     //clear previous joke
-    setJoke('');
     setRating(0);
 
     //set display rules
@@ -66,10 +65,10 @@ const JokeDisplay = (props) => {
     console.log(jokeRate);
     axios.post("http://localhost:5000/jokes/rate", jokeRate)
   .then(response => {
-    console.log('Daten erfolgreich gesendet:', response.data);
+    console.log('data sendet succesfully:', response.data);
     })
     .catch(error => {
-      console.error('Fehler beim Senden der Daten:', error);
+      console.error('error while sending the data:', error);
     });
     };
   

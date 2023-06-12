@@ -7,7 +7,7 @@ import axios from 'axios';
 import './CreateJoke.css';
 
  //rules to validate the input
- const Joke_REGEX = /^[a-zA-Z0-9][a-zA-Z0-9-_.%&/!?()$€='"]{10,500}$/;
+ const Joke_REGEX = /^[a-zA-Z0-9][a-zA-Z0-9-_.%&/!?()$€='" ,]{10,500}$/;
 
 
 const CreateJoke = () => {
@@ -45,7 +45,16 @@ const CreateJoke = () => {
     event.preventDefault();
 
     //send joke to database
-    axios.post("http://localhost:5000/jokes/create", {joke});
+    const jokedata = {
+      joke: joke
+    };
+    axios.post("http://localhost:5000/jokes/create", jokedata)
+    .then(response => {
+      console.log('data sendet succesfully:', response.data);
+      })
+      .catch(error => {
+        console.error('error while sending the data:', error);
+      });
 
     //sucessfully submitted
     setJoke('');
@@ -85,7 +94,7 @@ const CreateJoke = () => {
             <FontAwesomeIcon icon={faInfoCircle} />
             10 to 500 characters.<br />
             Must beginn with a letter or a number.<br />
-            Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span> <span aria-label="dot">.</span> <span aria-label="minus">-</span> <span aria-label="underscore">_</span> <span aria-label="and">&</span> <span aria-label="slash">/</span> <span aria-label="quiestion mark">?</span> <span aria-label="brackets">()</span> <span aria-label="euro sign">€</span> <span aria-label="equal">=</span> <span aria-label="apostrophe">'</span> <span aria-label="quotation mark">"</span>
+            Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span> <span aria-label="dot">.</span> <span aria-label="minus">-</span> <span aria-label="underscore">_</span> <span aria-label="and">&</span> <span aria-label="slash">/</span> <span aria-label="quiestion mark">?</span> <span aria-label="brackets">()</span> <span aria-label="euro sign">€</span> <span aria-label="equal">=</span> <span aria-label="apostrophe">'</span> <span aria-label="quotation mark">"</span> <span aria-label="comma">,</span>
             </p>
           {error && <p className="error-message">{error}</p>}
           <button type="submit" className="submit-joke-button">
