@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 
 import './JokeDisplay.css';
@@ -9,33 +10,48 @@ import './JokeDisplay.css';
 const JokeDisplay = (props) => {
   const [joke, setJoke] = useState('');
   const [rating, setRating] = useState(0);
-  const [submittedrating, setSubmittedRating] = useState(true);
-  const [jokedisplay, setJokeDisplay] = useState(false);
+  const [ratingdisplay, setRatingDisplay] = useState(false);
+  const [jokedisplay, setJokeDisplay] = useState(true);
   const [jokeID, setJokeID] = useState(0);
+
+  useEffect(() => {
+    fetchJoke();
+  }, []);
+
+  //fct to recieve data from database
+  const [data, setData] = useState([]);
+  const loadData = async () => {
+    const response = await axios.get("http://localhost:5000/jokes/get");
+    setData(response.data);
+  };
 
   //recieve userID from login or registration
   const { userID } = props;
+
+  //set the rating information
+  const jokeRate = {
+    user_id: userID,
+    joke_id: jokeID,
+    joke_rating: rating
+  };
 
 
   const fetchJoke = () => {
     //clear previous joke
     setJoke('');
-    setRating();
+    setRating(0);
 
     //set display rules
-    setSubmittedRating(false);
-    setJokeDisplay(true);
+    setRatingDisplay(true);
+    setJokeDisplay(false);
 
 
-    //fetch joke from database
-
-
-    //set jokeID from database
-    setJokeID();
-
-
-    //set joke
-    setJoke('example');
+    //fetch joke and joke_id from database
+    loadData();
+    data.map((item, index) => {
+      setJokeID(item.id)
+      setJoke(item.joke);
+    });
   };
 
   const handleRatingSubmit = () => {
@@ -43,12 +59,19 @@ const JokeDisplay = (props) => {
     console.log('Submitted rating:', rating);
     
     //set display rules
-    setSubmittedRating(true);
-    setJokeDisplay(false);
+    setRatingDisplay(false);
+    setJokeDisplay(true);
 
     //send rating result + userID + jokeID to database
-    console.log("userID:" + userID);
-  };
+    console.log(jokeRate);
+    axios.post("http://localhost:5000/jokes/rate", jokeRate)
+  .then(response => {
+    console.log('Daten erfolgreich gesendet:', response.data);
+    })
+    .catch(error => {
+      console.error('Fehler beim Senden der Daten:', error);
+    });
+    };
   
 
 
@@ -62,7 +85,7 @@ const JokeDisplay = (props) => {
             <p className="joke-text">{joke}</p>
           </div>
           <div className="button-container">
-          <div className={jokedisplay ? "rating-stars" : "hide"}>
+          <div className={ratingdisplay && joke ? "rating-stars" : "hide"}>
             {[1, 2, 3, 4, 5].map((index) => (
               <FontAwesomeIcon
                 key={index}
@@ -72,12 +95,10 @@ const JokeDisplay = (props) => {
               />
             ))}
           </div>
-            {!submittedrating && (
-              <button className={jokedisplay ? "submit-button" : "hide"} onClick={handleRatingSubmit}>
-                Submit Rating
-              </button>
-            )}
-            <button className={submittedrating ? "submit-button" : "hide"} onClick={fetchJoke}>
+            <button className={ratingdisplay && joke ? "submit-button" : "hide"} onClick={handleRatingSubmit}>
+              Submit Rating
+            </button>
+            <button className={jokedisplay || !joke ? "submit-button" : "hide"} onClick={fetchJoke}>
               Show Joke
             </button>
             <Link to="/create-joke" className="create-joke-link">

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {ToastContainer} from 'react-toastify';
 
 import Login from './Login';
 import Register from './Register';
@@ -21,6 +22,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <ToastContainer position="top-center" />
         <Switch>
         <Route path="/" exact render={() => <Login onLogin={handleLogin} />} />
           <Route path="/login" render={() => <Login onLogin={handleLogin} />} />

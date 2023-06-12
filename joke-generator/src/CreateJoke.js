@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {faCheck, faTimes, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 
 import './CreateJoke.css';
 
@@ -42,6 +43,9 @@ const CreateJoke = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    //send joke to database
+    axios.post("http://localhost:5000/jokes/create", {joke});
 
     //sucessfully submitted
     setJoke('');
