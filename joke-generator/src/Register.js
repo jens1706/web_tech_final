@@ -2,13 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {faCheck, faTimes, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Axios from 'axios';
+import axios from 'axios';
+import {toast} from "react-toastify"
 
 import './Register.css';
 
  //rules to validate the input
  const Name_REGEX = /^[a-zA-Z][a-zA-Z ]{2,50}$/;
- const Email_REGEX = /^(?=.*[@])[a-zA-Z0-9][a-zA-Z0-9-_.@]{10,50}$/;
+ const Email_REGEX = /^(?=.*[@])[a-zA-Z0-9][a-zA-Z0-9-_.@]{1,100}$/;
  const Password_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\.-_]).{8,24}$/;
 
 
@@ -34,6 +35,7 @@ const Register = (props) => {
   const history = useHistory();
   const userRef = useRef();
 
+  
   useEffect(() => {
     userRef.current.focus();
   }, [])
@@ -78,22 +80,57 @@ const Register = (props) => {
       return;
     }
 
+      //set the email information for validation
+      const email_db = {
+        email: email,
+      };
 
-    //write registration information into database
+    //check if the email is new
+    axios.post("http://localhost:5000/user/check", email_db)
+    .then(res => {
+      //console.log(res);
+      //process result
+      if (res.data.length == 0){
+        console.log("registration success");
+        toast.success("Registration successfully!");
 
+        //userid loggen
+        console.log(res);
+        //props.onLogin(res.data[0].id);
 
-    //send the userID to displayjoke
-    props.onRegister(69); //example
+        //set the rating information
+        const userdata = {
+          name: name,
+          email: email,
+          password: password
+        };
 
+        //write registration information into database
+        axios.post("http://localhost:5000/user/register", userdata)
+        .then(response => {
+          console.log('data sendet succesfully:', response.data);
+          })
+          .catch(error => {
+            console.error('error while sending the data:', error);
+          });
 
-    // reset of input 
-    setName('');
-    setEmail('');
-    setPassword('');
-    setMatchPassword('');
+        // reset of input 
+        setName('');
+        setEmail('');
+        setPassword('');
+        setMatchPassword('');
 
-    //link to DisplayJoke
-    history.push('/jokes');
+        //link to DisplayJoke
+        setTimeout(() => {
+          history.push('/jokes');
+        }, 2000);
+
+      }
+      else {
+        console.log("email exists");
+        toast.error("Email is already registrated!");
+      }
+    }).catch(err => console.log(err));
   };
 
   return (
@@ -162,7 +199,7 @@ const Register = (props) => {
             />
             <p id='emailidnote' className={emailFocus && email && !validemail ? "instructions" : "offscreen"}>
               <FontAwesomeIcon icon={faInfoCircle} />
-              10 to 50 characters.<br />
+              1 to 100 characters.<br />
               Must beginn with a letter or a number and contain a <span aria-label="at symbol">@</span>. <br />.
               Letters, numbers, <span aria-label="dot">.</span>, <span aria-label="minus">-</span>, <span aria-label="underscore">_</span> and <span aria-label="at symbol">@</span> allowed.
             </p>

@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import {faCheck, faTimes, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import {toast} from "react-toastify"
 
 import './CreateJoke.css';
 
@@ -58,7 +59,7 @@ const CreateJoke = () => {
 
     //sucessfully submitted
     setJoke('');
-    setsucess('Your joke was saved succesfully!');
+    toast.success("Joke created successfully!")
     console.log(`Joke submitted: ${joke}`);
   };
 
@@ -67,7 +68,6 @@ const CreateJoke = () => {
       <h1 className="page-title">Random Joke Generator</h1>
       <div className="create-joke-container">
         <h2 className="create-joke-heading">Create Joke</h2>
-        <p className="subheading">{sucess}</p>
         <form className="create-joke-form" onSubmit={handleSubmit}>
           <label htmlFor="joke" className="form-label">
             Your Joke

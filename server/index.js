@@ -17,20 +17,19 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.get("/", (req, res) => {
-    //example to test database connection
-    // const sqlInsert = "INSERT INTO users (name, email, password) VALUES ('senf', 'john@gmail.com', 'MAlsch.7')";
-    // db.query(sqlInsert, (error, result) => {
-    //     console.log("error", error);
-    //     console.log("result", result);
-    //     res.send("Hello Express");
-    // });
-})
+    res.send("Hello World");
+});
 
 //get jokes
 app.get("/jokes/get", (req, res) => {
     const sqlGet = "SELECT * FROM jokes ORDER BY RAND() LIMIT 1";
     db.query(sqlGet, (error, result) => {
-        res.send(result);
+        if(error) {
+            console.log(error);
+        }
+        else {
+            res.send(result);
+        }
     });
 });
 
@@ -54,7 +53,45 @@ app.post("/jokes/create", (req, res) => {
             console.log(error);
         }
     });
-}) 
+});
+
+//create user
+app.post("/user/register", (req, res) => {
+    const {name, email, password} = req.body;
+    const sqlInsert = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+    db.query(sqlInsert, [name, email, password], (error, result) => {
+        if(error) {
+            console.log(error);
+        }
+    });
+});
+
+app.post("/user/check", (req, res) => {
+    const { email } = req.body;
+    const sqlCheck = "SELECT * FROM users WHERE email = ?";
+    db.query(sqlCheck, [email], (error, result) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.json(result);
+      }
+    });
+});
+
+app.post("/user/login", (req, res) => {
+    const { email, password } = req.body;
+    const sqlLogin = "SELECT * FROM users WHERE email = ? AND password = ?";
+    db.query(sqlLogin, [email, password], (error, result) => {
+        if (error) {
+            return res.json("Error");
+        } 
+        else {
+            return res.json(result);
+        }
+    });
+})
+  
+
 
 app.listen(5000, () => {
     console.log("Server is running on port 5000");

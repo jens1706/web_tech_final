@@ -8,7 +8,7 @@ import axios from 'axios';
 import './Login.css';
 
  //rules to validate the input
-const Email_REGEX = /^(?=.*[@])[a-zA-Z0-9][a-zA-Z0-9-_.@]{10,50}$/;
+const Email_REGEX = /^(?=.*[@])[a-zA-Z0-9][a-zA-Z0-9-_.@]{1,100}$/;
 const Password_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\.-_]).{8,24}$/;
 
 const Login = (props) => {
@@ -25,7 +25,7 @@ const Login = (props) => {
   const history = useHistory();
   const userRef = useRef();
 
-  
+
   useEffect(() => {
     userRef.current.focus();
   }, [])
@@ -60,19 +60,37 @@ const Login = (props) => {
       return;
     }
 
-
-    //prove the login data with the database
-
-    //send the userID to displayjoke
-    props.onLogin(69); //example
-
+    //set the login information
+    const userdata = {
+      email: email,
+      password: password
+    };
     
-    //delete entries
-    setEmail('');
-    setPassword('');
+    //prove the login data with the database
+    axios.post("http://localhost:5000/user/login", userdata)
+    .then(res => {
+      //process result
+      if (res.data.length == 0){
+        console.log("login failed");
+        toast.error("Login failed!");
+      }
+      else {
+        console.log("login success");
+        toast.success("Login successfully!");
 
-    //link to DisplayJoke
-    history.push('/jokes');
+        //userid loggen
+        props.onLogin(res.data[0].id);
+
+        //delete entries
+        setEmail('');
+        setPassword('');
+
+        //link to DisplayJoke
+        setTimeout(() => {
+          history.push('/jokes');
+        }, 500);
+      }
+    }).catch(err => console.log(err));
   };
 
   return (
@@ -108,7 +126,7 @@ const Login = (props) => {
               />
               <p id='emailidnote' className={emailFocus && email && !validemail ? "instructions" : "offscreen"}>
                 <FontAwesomeIcon icon={faInfoCircle} />
-                10 to 50 characters.<br />
+                1 to 100 characters.<br />
                 Must beginn with a letter or a number and contain a <span aria-label="at symbol">@</span>. <br />.
                 Letters, numbers, <span aria-label="dot">.</span>, <span aria-label="minus">-</span>, <span aria-label="underscore">_</span> and <span aria-label="at symbol">@</span> allowed.
               </p>
