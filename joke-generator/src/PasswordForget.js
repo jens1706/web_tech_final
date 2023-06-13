@@ -111,7 +111,7 @@ const PasswordForget = () => {
     }
     console.log(password_db);
     // Database communication, to change password
-    axios.post("http://localhost:5000/user/validate", password_db)
+    axios.put("http://localhost:5000/user/update", password_db)
     .then(res => {
         console.log(res);
         }).catch(err => console.log(err));

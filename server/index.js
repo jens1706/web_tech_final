@@ -108,7 +108,7 @@ app.post("/user/validate", (req, res) => {
     });
 });
 
-app.post("/user/update", (req, res) => {
+app.put("/user/update", (req, res) => {
     const { password, id } = req.body;
     const sqlUpdate = "UPDATE users SET password = ? WHERE id = ?";
     db.query(sqlUpdate, [password, id], (error, result) => {
