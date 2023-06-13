@@ -63,6 +63,10 @@ const CreateJoke = () => {
     console.log(`Joke submitted: ${joke}`);
   };
 
+  const handleLogout = () => {
+    toast.info("You have been logged out.")
+  };
+
   return (
     <div className="create-joke-page">
       <h1 className="page-title">Random Joke Generator</h1>
@@ -104,8 +108,8 @@ const CreateJoke = () => {
         <Link to="/jokes" className="back-to-display-link">
           Back to Joke Display
         </Link>
-        <Link to="/login" className="back-to-login-link">
-          Back to Login
+        <Link to="/login" className="back-to-login-link" onClick={handleLogout}>
+          Logout
         </Link>
       </div>
     </div>

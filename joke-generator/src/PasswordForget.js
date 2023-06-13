@@ -5,141 +5,137 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import {toast} from "react-toastify"
 
-import './Register.css';
+import './PasswordForget.css';
 
  //rules to validate the input
  const Name_REGEX = /^[a-zA-Z][a-zA-Z ]{2,50}$/;
  const Email_REGEX = /^(?=.*[@])[a-zA-Z0-9][a-zA-Z0-9-_.@]{1,100}$/;
  const Password_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\.-_]).{8,24}$/;
 
+ let userID = 0;
 
-const Register = (props) => {
-  const [name, setName] = useState('');
-  const [validname, setValidName] = useState(false);
-  const [nameFocus, setNameFocus] = useState(false);
-
-  const [email, setEmail] = useState('');
-  const [validemail, setValidEmail] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
-
-  const [password, setPassword] = useState('');
-  const [validpassword, setValidPassword] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
-
-  const [match_password, setMatchPassword] = useState('');
-  const [validmatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
-
-  const [error, setErrMsg] = useState('');
-
-  const history = useHistory();
-  const userRef = useRef();
-
+const PasswordForget = () => {
+    const [name, setName] = useState('');
+    const [validname, setValidName] = useState(false);
+    const [nameFocus, setNameFocus] = useState(false);
   
-  useEffect(() => {
-    userRef.current.focus();
-  }, [])
+    const [email, setEmail] = useState('');
+    const [validemail, setValidEmail] = useState(false);
+    const [emailFocus, setEmailFocus] = useState(false);
+  
+    const [password, setPassword] = useState('');
+    const [validpassword, setValidPassword] = useState(false);
+    const [passwordFocus, setPasswordFocus] = useState(false);
+  
+    const [match_password, setMatchPassword] = useState('');
+    const [validmatch, setValidMatch] = useState(false);
+    const [matchFocus, setMatchFocus] = useState(false);
+  
+    const [error, setErrMsg] = useState('');
+  
+    const history = useHistory();
+    const userRef = useRef();
 
-  useEffect (() => {
-    const result =Name_REGEX.test(name);
-    console.log(result);
-    console.log(name);
-    setValidName(result);
-  }, [name])
+    const [usercorrect, setUserCorrect] = useState(false);
+  
+    
+    useEffect(() => {
+      userRef.current.focus();
+    }, [])
+  
+    useEffect (() => {
+      const result =Name_REGEX.test(name);
+      console.log(result);
+      console.log(name);
+      setValidName(result);
+    }, [name])
+  
+    useEffect (() => {
+      const result =Email_REGEX.test(email);
+      console.log(result);
+      console.log(email);
+      setValidEmail(result);
+    }, [email])
+  
+    useEffect (() => {
+      const result =Password_REGEX.test(password);
+      console.log(result);
+      console.log(password);
+      setValidPassword(result);
+      const match = password	=== match_password;
+      setValidMatch(match);
+    }, [password, match_password])
+  
+    useEffect(() => {
+      setErrMsg('');
+    }, [name, email, password, match_password])
 
-  useEffect (() => {
-    const result =Email_REGEX.test(email);
-    console.log(result);
-    console.log(email);
-    setValidEmail(result);
-  }, [email])
 
-  useEffect (() => {
-    const result =Password_REGEX.test(password);
-    console.log(result);
-    console.log(password);
-    setValidPassword(result);
-    const match = password	=== match_password;
-    setValidMatch(match);
-  }, [password, match_password])
-
-  useEffect(() => {
-    setErrMsg('');
-  }, [name, email, password, match_password])
-
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
-    //if button enabled with JS hack
-    const v1 = Name_REGEX.test(name);
-    const v2 = Email_REGEX.test(email);
-    const v3 = Password_REGEX.test(password);
-    if (!v1 || !v2 || !v3) {
-      setErrMsg("Invalid Entry");
-      return;
-    }
-
-      //set the email information for validation
-      const email_db = {
+  const CheckUser = () => {
+    //set the user information for validation
+    const user_db = {
+        name: name,
         email: email,
-      };
-
-    //check if the email is new
-    axios.post("http://localhost:5000/user/check", email_db)
-    .then(res => {
-      //console.log(res);
-      //process result
-      if (res.data.length == 0){
-        console.log("registration success");
-        toast.success("Registration successfully!");
-
-        //userid loggen
-        props.onLogin(res.data[0].id);
-
-        //set the rating information
-        const userdata = {
-          name: name,
-          email: email,
-          password: password
         };
 
-        //write registration information into database
-        axios.post("http://localhost:5000/user/register", userdata)
-        .then(res => {
-          console.log('data sendet succesfully:', res.data);
-          })
-          .catch(error => {
-            console.error('error while sending the data:', error);
-          });
+    //database connection to check user
+    axios.post("http://localhost:5000/user/validate", user_db)
+    .then(res => {
+        if (res.data.length == 0){
+            console.log("user doesn't exists");
+            toast.error("User information is wrong!");
+        }
+        else {
+            //set success
+            toast.info("User information is correct.")
+            setUserCorrect(true);
 
-        // reset of input 
-        setName('');
-        setEmail('');
-        setPassword('');
-        setMatchPassword('');
-
-        //link to DisplayJoke
-        setTimeout(() => {
-          history.push('/jokes');
-        }, 2000);
-
-      }
-      else {
-        console.log("email exists");
-        toast.error("Email is already registrated!");
-      }
+            //userid loggen
+            //console.log("id:" + res.data[0].id);
+            userID = res.data[0].id;
+            console.log("id:" + userID);
+          }
     }).catch(err => console.log(err));
   };
 
+  const ChangePassword = () => {
+    //log the sucess
+    console.log("password change success");
+    toast.success("Password changed successfully!");
+    setUserCorrect(false);
+
+    //set user information for password change
+    const password_db = {
+        password: password,
+        id: userID,
+    }
+    console.log(password_db);
+    // Database communication, to change password
+    axios.post("http://localhost:5000/user/validate", password_db)
+    .then(res => {
+        console.log(res);
+        }).catch(err => console.log(err));
+
+    //reset user data
+    setName('');
+    setEmail('');
+    setPassword('');
+    setMatchPassword('');
+    userID = 0;
+
+    //link to Login
+    setTimeout(() => {
+        history.push('/login');
+    }, 2000);
+  };
+
   return (
-    <section>
-    <div className="register-page">
-      <h1 className="page-title">Random Joke Generator</h1>
-      <div className="register-container">
-        <h2 className="register-heading">Register</h2>
-        <form onSubmit={handleRegister}>
-          <div className="form-group">
+    <div className="password-forget-page">
+      <div className="password-forget-container">
+        <h2 className="password-forget-heading">Change Pasword</h2>
+        {error && <p className="error-message">{error}</p>}
+        <form className="password-forget-form">
+        <div className={usercorrect ? "hide" : "form-group"}>
             <label htmlFor="name" className="form-label">
               Name
               <span className={validname ? "valid" : "hide"}>
@@ -171,7 +167,7 @@ const Register = (props) => {
               Letters and spaces allowed.
             </p>
           </div>
-          <div className="form-group">
+          <div className={usercorrect ? "hide" : "form-group"}>
             <label htmlFor="email" className="form-label">
               Email Address
               <span className={validemail ? "valid" : "hide"}>
@@ -202,7 +198,7 @@ const Register = (props) => {
               Letters, numbers, <span aria-label="dot">.</span>, <span aria-label="minus">-</span>, <span aria-label="underscore">_</span> and <span aria-label="at symbol">@</span> allowed.
             </p>
           </div>
-          <div className="form-group">
+          <div className={usercorrect ? "form-group" : "hide"}>
             <label htmlFor="password" className="form-label">
               Password
               <span className={validpassword ? "valid" : "hide"}>
@@ -232,7 +228,7 @@ const Register = (props) => {
               Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span> <span aria-label="dot">.</span> <span aria-label="minus">-</span> <span aria-label="underscore">_</span>
             </p>
           </div>
-          <div className="form-group">
+          <div className={usercorrect ? "form-group" : "hide"}>
             <label htmlFor="match_password" className="form-label">
               Repeat Password
               <span className={validmatch && match_password ? "valid" : "hide"}>
@@ -260,21 +256,22 @@ const Register = (props) => {
               Must match the first password input field.<br />
             </p>
           </div>
-          {error && <p className="error-message">{error}</p>}
-          <button type="submit" className="register-button">
-            Register
+          <button type="submit" className={usercorrect ? "reset-button" : "hide"} onClick={ChangePassword}>
+            Change Password
+          </button>
+          <button type="submit" className={usercorrect ? "hide" : "reset-button"} onClick={CheckUser}>
+            Validate user information
           </button>
         </form>
         <p className="login-text">
-          Already have an account?{' '}
-          <Link to="/login" className="login-link">
+          Back to{' '}
+          <a href="/login" className="login-link">
             Login
-          </Link>
+          </a>
         </p>
       </div>
     </div>
-    </section>
   );
 };
 
-export default Register;
+export default PasswordForget;

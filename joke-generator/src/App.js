@@ -8,6 +8,7 @@ import Login from './Login';
 import Register from './Register';
 import JokeDisplay from './JokeDisplay';
 import CreateJoke from './CreateJoke';
+import PasswordForget from './PasswordForget';
 
 function App() {
   //settings to send the userID from login and registration to display joke
@@ -28,6 +29,7 @@ function App() {
         <Switch>
         <Route path="/" exact render={() => <Login onLogin={handleLogin} />} />
           <Route path="/login" render={() => <Login onLogin={handleLogin} />} />
+          <Route path="/password-forget" component={PasswordForget} />
           <Route path="/register" render={() => <Register onRegister={handleRegister} />} />
           <Route path="/jokes" render={() => <JokeDisplay userID={userID} />} />
           <Route path="/create-joke" component={CreateJoke} />

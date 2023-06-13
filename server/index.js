@@ -63,6 +63,9 @@ app.post("/user/register", (req, res) => {
         if(error) {
             console.log(error);
         }
+        else {
+            res.json(result);
+          }
     });
 });
 
@@ -72,7 +75,8 @@ app.post("/user/check", (req, res) => {
     db.query(sqlCheck, [email], (error, result) => {
       if (error) {
         console.log(error);
-      } else {
+      } 
+      else {
         res.json(result);
       }
     });
@@ -89,10 +93,34 @@ app.post("/user/login", (req, res) => {
             return res.json(result);
         }
     });
-})
+});
   
+app.post("/user/validate", (req, res) => {
+    const { name, email } = req.body;
+    const sqlLogin = "SELECT * FROM users WHERE name = ? AND email = ?";
+    db.query(sqlLogin, [name, email], (error, result) => {
+        if (error) {
+            return res.json("Error");
+        } 
+        else {
+            return res.json(result);
+        }
+    });
+});
+
+app.post("/user/update", (req, res) => {
+    const { password, id } = req.body;
+    const sqlUpdate = "UPDATE users SET password = ? WHERE id = ?";
+    db.query(sqlUpdate, [password, id], (error, result) => {
+        if (error) {
+            return res.json("Error");
+        } else {
+            return res.json(result);
+        }
+    });
+});
 
 
 app.listen(5000, () => {
     console.log("Server is running on port 5000");
-})
+});

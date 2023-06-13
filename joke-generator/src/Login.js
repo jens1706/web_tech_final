@@ -76,7 +76,7 @@ const Login = (props) => {
       }
       else {
         console.log("login success");
-        toast.success("Login successfully!");
+        toast.info("You have been logged in.")
 
         //userid loggen
         props.onLogin(res.data[0].id);
@@ -170,6 +170,12 @@ const Login = (props) => {
             Don't have an account?{' '}
             <Link to="/register" className="register-link">
               Register
+            </Link>
+          </p>
+          <p className="register-text">
+            Did forget your password?{' '}
+            <Link to="/password-forget" className="register-link">
+              Change Password
             </Link>
           </p>
         </div>

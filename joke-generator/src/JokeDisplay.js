@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import {toast} from "react-toastify"
 
 
 import './JokeDisplay.css';
@@ -58,6 +59,7 @@ const JokeDisplay = (props) => {
   const handleRatingSubmit = () => {
     // Perform actions here based on the submitted rating
     console.log('Submitted rating:', rating);
+    toast.success("Joke rated successfully!")
     
     //set display rules
     setRatingDisplay(false);
@@ -66,12 +68,16 @@ const JokeDisplay = (props) => {
     //send rating result + userID + jokeID to database
     console.log(jokeRate);
     axios.post("http://localhost:5000/jokes/rate", jokeRate)
-  .then(response => {
-    console.log('data sendet succesfully:', response.data);
+  .then(res => {
+    console.log('data sendet succesfully:', res.data);
     })
     .catch(error => {
       console.error('error while sending the data:', error);
     });
+    };
+
+    const handleLogout = () => {
+      toast.info("You have been logged out.")
     };
   
 
@@ -107,8 +113,8 @@ const JokeDisplay = (props) => {
             </Link>
           </div>
         </div>
-        <Link to="/login" className="back-to-login-link">
-          Back to Login
+        <Link to="/login" className="back-to-login-link" onClick={handleLogout}>
+          Logout
         </Link>
       </div>
     </div>
