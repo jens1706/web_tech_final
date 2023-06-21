@@ -15,6 +15,10 @@ const JokeDisplay = (props) => {
   const [jokedisplay, setJokeDisplay] = useState(true);
   const [jokeID, setJokeID] = useState(0);
 
+  
+  //recieve userID from login or registration
+  const { userID } = props;
+  //console.log("userID:" + userID);
 
   //fct to recieve data from database
   useEffect(() => {
@@ -26,10 +30,6 @@ const JokeDisplay = (props) => {
     const response = await axios.get("http://localhost:5000/jokes/get");
     setData(response.data);
   };
-
-  //recieve userID from login or registration
-  const { userID } = props;
-  //console.log("userID:" + userID);
 
   //set the rating information
   const jokeRate = {

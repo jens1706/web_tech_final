@@ -90,12 +90,9 @@ const Register = (props) => {
     .then(res => {
       //console.log(res);
       //process result
-      if (res.data.length == 0){
+      if (res.data.length === 0){
         console.log("registration success");
         toast.success("Registration successfully!");
-
-        //userid loggen
-        props.onLogin(res.data[0].id);
 
         //set the rating information
         const userdata = {
@@ -121,7 +118,7 @@ const Register = (props) => {
 
         //link to DisplayJoke
         setTimeout(() => {
-          history.push('/jokes');
+          history.push('/login');
         }, 2000);
 
       }

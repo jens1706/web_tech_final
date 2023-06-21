@@ -120,6 +120,23 @@ app.put("/user/update", (req, res) => {
     });
 });
 
+app.post("/user/delete", (req, res) => {
+    const { email, password } = req.body;
+    const sqlDelete = "DELETE FROM users WHERE email = ? AND password = ?";
+    db.query(sqlDelete, [email, password], (error, result) => {
+      if (error) {
+        return res.json("Error");
+      } else {
+        if (result.affectedRows === 0) {
+            // No matching entry found
+            return res.json(false);
+        } else {
+            return res.json(true);
+          }
+      }
+    });
+  });
+  
 
 app.listen(5000, () => {
     console.log("Server is running on port 5000");

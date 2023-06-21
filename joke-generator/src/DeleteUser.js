@@ -2,95 +2,80 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {faCheck, faTimes, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {toast} from "react-toastify"
 import axios from 'axios';
+import {toast} from "react-toastify"
 
 import './Login.css';
 
  //rules to validate the input
-const Email_REGEX = /^(?=.*[@])[a-zA-Z0-9][a-zA-Z0-9-_.@]{1,100}$/;
-const Password_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\.-_]).{8,24}$/;
+ const Email_REGEX = /^(?=.*[@])[a-zA-Z0-9][a-zA-Z0-9-_.@]{1,100}$/;
+ const Password_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\.-_]).{8,24}$/;
 
-const Login = (props) => {
-  const [email, setEmail] = useState('');
-  const [validemail, setValidEmail] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
-
-  const [password, setPassword] = useState('');
-  const [validpassword, setValidPassword] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
-
-  const [error, setErrMsg] = useState('');
-
-  const history = useHistory();
-  const userRef = useRef();
-
-
-  useEffect(() => {
-    userRef.current.focus();
-  }, [])
-
-  useEffect (() => {
-    const result =Email_REGEX.test(email);
-    console.log(result);
-    console.log(email);
-    setValidEmail(result);
-  }, [email])
-
-  useEffect (() => {
-    const result =Password_REGEX.test(password);
-    console.log(result);
-    console.log(password);
-    setValidPassword(result);
-  }, [password])
-
-  useEffect(() => {
-    setErrMsg('');
-  }, [email, password])
-
+const DeleteUser = () => {
+    const [email, setEmail] = useState('');
+    const [validemail, setValidEmail] = useState(false);
+    const [emailFocus, setEmailFocus] = useState(false);
   
-  const handleLogin = async (e) => {
-    e.preventDefault();
+    const [password, setPassword] = useState('');
+    const [validpassword, setValidPassword] = useState(false);
+    const [passwordFocus, setPasswordFocus] = useState(false);
+  
+    const [error, setErrMsg] = useState('');
+  
+    const history = useHistory();
+    const userRef = useRef();
 
-    //if button enabled with JS hack
-    const v1 = Email_REGEX.test(email);
-    const v2 = Password_REGEX.test(password);
-    if (!v1 || !v2) {
-      setErrMsg("Invalid Entry");
-      return;
-    }
-
-    //set the login information
-    const userdata = {
-      email: email,
-      password: password
-    };
+    useEffect(() => {
+        userRef.current.focus();
+      }, [])
     
-    //prove the login data with the database
-    axios.post("http://localhost:5000/user/login", userdata)
-    .then(res => {
-      //process result
-      if (res.data.length === 0){
-        console.log("login failed");
-        toast.error("Login failed!");
-      }
-      else {
-        console.log("login success");
-        toast.info("You have been logged in.")
+      useEffect (() => {
+        const result =Email_REGEX.test(email);
+        console.log(result);
+        console.log(email);
+        setValidEmail(result);
+      }, [email])
+    
+      useEffect (() => {
+        const result =Password_REGEX.test(password);
+        console.log(result);
+        console.log(password);
+        setValidPassword(result);
+      }, [password])
+    
+      useEffect(() => {
+        setErrMsg('');
+      }, [email, password])
 
-        //userid loggen
-        props.onLogin(res.data[0].id);
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    //set the user information for validation
+    const user_db = {
+        email: email,
+        password: password,
+        };
 
-        //delete entries
-        setEmail('');
-        setPassword('');
+        axios.post("http://localhost:5000/user/delete", user_db)
+        .then(res => {
+            console.log(res);
+            if (res.data == true){
+                console.log("user deleted succesfully");
+                toast.success("User deleted succesfully!");
 
-        //link to DisplayJoke
-        setTimeout(() => {
-          history.push('/jokes');
-        }, 500);
-      }
-    }).catch(err => console.log(err));
+                //reset user data
+                setEmail('');
+                setPassword('');
+
+                //link to Login
+                setTimeout(() => {
+                    history.push('/login');
+                }, 2000);
+            }
+            else {
+                //set success
+                toast.error("User information is not correct.")
+              }
+        }).catch(err => console.log(err));
   };
 
   return (
@@ -98,8 +83,8 @@ const Login = (props) => {
     <div className="login-page">
       <h1 className="page-title">Random Joke Generator</h1>
         <div className="login-container">
-          <h2 className="login-heading">Login</h2>
-          <form onSubmit={handleLogin}>
+          <h2 className="login-heading">Delete User</h2>
+          <form onSubmit={handleDelete}>
             <div className="form-group">
               <label htmlFor="email" className="form-label">
                 Email Address
@@ -163,25 +148,13 @@ const Login = (props) => {
             </div>
             {error && <p className="error-message">{error}</p>}
             <button type="submit" className="login-button">
-              Login
+              Delete
             </button>
           </form>
           <p className="register-text">
-            Don't have an account?{' '}
-            <Link to="/register" className="register-link">
-              Register
-            </Link>
-          </p>
-          <p className="register-text">
-            Did forget your password?{' '}
-            <Link to="/password-forget" className="register-link">
-              Change Password
-            </Link>
-          </p>
-          <p className="register-text">
-            Do you want to delete an existing user account?{' '}
-            <Link to="/delete-user" className="register-link">
-              Delete User
+            You want to login into an existing account?{' '}
+            <Link to="/login" className="register-link">
+              Login
             </Link>
           </p>
         </div>
@@ -190,4 +163,4 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default DeleteUser;

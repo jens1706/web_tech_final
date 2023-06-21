@@ -11,7 +11,7 @@ import './CreateJoke.css';
  const Joke_REGEX = /^[a-zA-Z0-9][a-zA-Z0-9-_.%&/!?()$€='" ,]{10,500}$/;
 
 
-const CreateJoke = () => {
+const CreateJoke = (props) => {
   const [joke, setJoke] = useState('');
   const [validjoke, setValidJoke] = useState(false);
   const [jokeFocus, setJokeFocus] = useState(false);
@@ -20,6 +20,10 @@ const CreateJoke = () => {
   const [error, setErrMsg] = useState('');
 
   const userRef = useRef();
+
+  //recieve userID from login or registration
+  const { userID } = props;
+  //console.log("userID:" + userID);
 
   useEffect(() => {
     userRef.current.focus();
