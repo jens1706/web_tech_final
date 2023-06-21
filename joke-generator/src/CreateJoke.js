@@ -16,18 +16,29 @@ const CreateJoke = (props) => {
   const [validjoke, setValidJoke] = useState(false);
   const [jokeFocus, setJokeFocus] = useState(false);
 
-  const [sucess, setsucess] = useState('');
   const [error, setErrMsg] = useState('');
+
+  //recieve loggedIn Status from login or registration
+  const { loggedIn } = props;
 
   const userRef = useRef();
 
-  //recieve userID from login or registration
-  const { userID } = props;
-  //console.log("userID:" + userID);
+  const history = useHistory();
 
+  // Check if the page was opened through the link to create a joke
   useEffect(() => {
     userRef.current.focus();
-  }, [])
+    if (loggedIn) {
+      //logged in
+    } else if (!loggedIn) {
+      // not logged in
+      toast.error("You have not been logged in!");
+      //link back to login
+      setTimeout(() => {
+        history.push('/login');
+      }, 500);
+    } 
+  }, []);
 
   useEffect (() => {
     const result =Joke_REGEX.test(joke);
@@ -43,7 +54,6 @@ const CreateJoke = (props) => {
 
   const handleInputChange = (event) => {
     setJoke(event.target.value);
-    setsucess('');
   };
 
   const handleSubmit = (event) => {

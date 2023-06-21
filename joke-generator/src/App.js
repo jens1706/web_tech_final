@@ -14,14 +14,13 @@ import DeleteUser from './DeleteUser';
 function App() {
   //settings to send the userID from login and registration to display joke
   const [userID, setUserID] = useState(0);
+  const [loggedIn, setLogIn] = useState(false);
 
   const handleLogin = (userID) => {
     setUserID(userID);
+    setLogIn(true);
   };
 
-  const handleRegister = (userID) => {
-    setUserID(userID);
-  };
 
   return (
     <Router>
@@ -30,11 +29,11 @@ function App() {
         <Switch>
         <Route path="/" exact render={() => <Login onLogin={handleLogin} />} />
           <Route path="/login" render={() => <Login onLogin={handleLogin} />} />
+          <Route path="/register" component={Register} />
           <Route path="/password-forget" component={PasswordForget} />
           <Route path="/delete-user" component={DeleteUser} />
-          <Route path="/register" component={Register} />
-          <Route path="/jokes" render={() => <JokeDisplay userID={userID} />} />
-          <Route path="/create-joke" render={() => <CreateJoke userID={userID} />} />
+          <Route path="/jokes" render={() => <JokeDisplay userID={userID} loggedIn={loggedIn} />} />
+          <Route path="/create-joke" render={() => <CreateJoke loggedIn={loggedIn} />} />
         </Switch>
       </div>
     </Router>

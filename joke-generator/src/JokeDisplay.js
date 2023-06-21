@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory  } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import {toast} from "react-toastify"
 import './JokeDisplay.css';
 
 const JokeDisplay = (props) => {
+
   const [joke, setJoke] = useState('');
   const [rating, setRating] = useState(0);
   const [ratingdisplay, setRatingDisplay] = useState(false);
@@ -16,12 +17,27 @@ const JokeDisplay = (props) => {
   const [jokeID, setJokeID] = useState(0);
 
   
-  //recieve userID from login or registration
+  //recieve userID and loggedIn Status from login or registration
   const { userID } = props;
+  const { loggedIn } = props;
   //console.log("userID:" + userID);
 
-  //fct to recieve data from database
+  const history = useHistory();
+
   useEffect(() => {
+    // Check if the page was opened after login
+    if (loggedIn) {
+      // accessed the page through the login
+    } else {
+      //accessed without login
+      toast.error("You have not been logged in!");
+      //link back to login
+      setTimeout(() => {
+        history.push('/login');
+      }, 500);
+    }
+
+  //fct to recieve data from database
     fetchJoke();
   }, []);
   const [data, setData] = useState([]);
@@ -29,13 +45,6 @@ const JokeDisplay = (props) => {
   const loadData = async () => {
     const response = await axios.get("http://localhost:5000/jokes/get");
     setData(response.data);
-  };
-
-  //set the rating information
-  const jokeRate = {
-    user_id: userID,
-    joke_id: jokeID,
-    joke_rating: rating
   };
 
 
@@ -64,6 +73,13 @@ const JokeDisplay = (props) => {
     //set display rules
     setRatingDisplay(false);
     setJokeDisplay(true);
+
+    //set the rating information
+    const jokeRate = {
+      user_id: userID,
+      joke_id: jokeID,
+      joke_rating: rating
+    };
 
     //send rating result + userID + jokeID to database
     console.log(jokeRate);

@@ -87,7 +87,7 @@ const Login = (props) => {
 
         //link to DisplayJoke
         setTimeout(() => {
-          history.push('/jokes');
+          history.push('/jokes')
         }, 500);
       }
     }).catch(err => console.log(err));
