@@ -125,9 +125,13 @@
   
   /* Responsive Styles */
   @media only screen and (max-width: 600px) {
+    .page-title{
+      font-size: 20px;
+    }
+
     .register-container {
       padding: 20px;
-      width: 100%;
+      width: 80%;
     }
   
     .register-heading {
@@ -146,5 +150,4 @@
     .login-text {
       font-size: 14px;
     }
-  }
-  
+  }  

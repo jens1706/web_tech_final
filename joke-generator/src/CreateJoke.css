@@ -143,3 +143,34 @@
   position: absolute;
   left: -9999px;
 }
+
+  /* Responsive Styles */
+  @media only screen and (max-width: 600px) {
+    .page-title{
+      font-size: 20px;
+    }
+
+    .create-joke-container {
+      padding: 20px;
+      width: 80%;
+    }
+  
+    .create-joke-heading {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+  
+    .subheading {
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+  
+    .form-label,
+    .form-input,
+    .submit-joke-button,
+    .joke-input,
+    .back-to-display-link,
+    .back-to-login-link {
+      font-size: 14px;
+    }
+  }

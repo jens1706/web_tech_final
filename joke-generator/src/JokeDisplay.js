@@ -127,11 +127,11 @@ const JokeDisplay = (props) => {
             <Link to="/create-joke" className="create-joke-link">
               Create your own Joke here!
             </Link>
+            <Link to="/login" className="back-to-login-link" onClick={handleLogout}>
+              Logout
+            </Link>
           </div>
         </div>
-        <Link to="/login" className="back-to-login-link" onClick={handleLogout}>
-          Logout
-        </Link>
       </div>
     </div>
   );

@@ -16,13 +16,12 @@
 }
 
   .login-container {
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #fff;
     max-width: 500px;
     width: 90%;
-    margin: 0 auto;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
   }
   
   .login-heading {
@@ -123,9 +122,13 @@
 
   /* Responsive Styles */
   @media only screen and (max-width: 600px) {
+    .page-title{
+      font-size: 20px;
+    }
+
     .login-container {
       padding: 20px;
-      width: 100%;
+      width: 80%;
     }
   
     .login-heading {
@@ -145,4 +148,3 @@
       font-size: 14px;
     }
   }
-  

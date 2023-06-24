@@ -131,6 +131,7 @@ const PasswordForget = () => {
 
   return (
     <div className="password-forget-page">
+      <h1 className="page-title">Random Joke Generator</h1>
       <div className="password-forget-container">
         <h2 className="password-forget-heading">Change Pasword</h2>
         {error && <p className="error-message">{error}</p>}

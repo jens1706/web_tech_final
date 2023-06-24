@@ -95,11 +95,12 @@
   }
   
   .create-joke-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
     color: #007bff;
     text-decoration: none;
     font-size: 18px;
-    cursor: pointer;
-    margin-top: 10px;
     transition: color 0.3s ease;
   }
   
@@ -139,3 +140,42 @@
   .hide {
     display: none;
   }
+
+    /* Responsive Styles */
+    @media only screen and (max-width: 600px) {
+      .page-title{
+        font-size: 20px;
+      }
+  
+      .joke-display-container{
+        padding: 20px;
+        width: 80%;
+      }
+    
+      .joke-display-heading {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+    
+      .subheading {
+        font-size: 12px;
+        margin-bottom: 16px;
+      }
+    
+      .joke-content {
+        width: 80%;
+      }
+
+      .star {
+        margin: 0 1px;
+      }
+
+      .form-label,
+      .form-input,
+      .submit-button,
+      .joke-text,
+      .back-to-login-link,
+      .create-joke-link {
+        font-size: 14px;
+      }
+    }
