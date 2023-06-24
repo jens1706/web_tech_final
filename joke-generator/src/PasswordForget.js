@@ -266,9 +266,9 @@ const PasswordForget = () => {
         </form>
         <p className="login-text">
           Back to{' '}
-          <a href="/login" className="login-link">
+          <Link to="/login" className="login-link">
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </div>
