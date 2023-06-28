@@ -5,9 +5,9 @@ const mysql = require("mysql2");
 const cors = require("cors");
 
 const db = mysql.createPool({
-    host: "localhost",
-    user: "joke_generator",
-    password: "password",
+    host: "joke-generator.c4fsqngvch7c.ap-southeast-2.rds.amazonaws.com",
+    user: "admin",
+    password: "Malsch.76316",
     database: "jokegenerator"
 });
 

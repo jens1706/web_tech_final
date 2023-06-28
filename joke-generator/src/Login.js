@@ -25,7 +25,6 @@ const Login = (props) => {
   const history = useHistory();
   const userRef = useRef();
 
-
   useEffect(() => {
     userRef.current.focus();
   }, [])
